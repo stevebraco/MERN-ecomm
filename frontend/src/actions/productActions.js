@@ -17,21 +17,65 @@ import {
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_FAIL,
   PRODUCT_DELETE_SUCCESS,
+  PRODUCT_NEW_LIST_SUCCESS,
+  PRODUCT_NEW_LIST_REQUEST,
+  PRODUCT_NEW_LIST_FAIL,
+  PRODUCT_CATEGORY_LIST_REQUEST,
+  PRODUCT_CATEGORY_LIST_SUCCESS,
+  PRODUCT_CATEGORY_LIST_FAIL,
 } from "../constants/productConstants";
 
 //Liste des produits HomeScreen
-export const listProducts = () => async (dispatch) => {
+export const listProducts = ({ seller = "", name = "", category = '' }) => async (
+  dispatch
+) => {
   dispatch({
     type: PRODUCT_LIST_REQUEST,
   });
   try {
     //Récupération des products de la database (productRouter.js)
-    const { data } = await Axios.get("/api/products");
+    const { data } = await Axios.get(
+      `/api/products?seller=${seller}&name=${name}&category=${category}`
+    );
     // La data seront directement dans le payload
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
     // Message d'erreur si on parvient pas à avoir la data
     dispatch({ type: PRODUCT_LIST_FAIL, payload: error.message });
+  }
+};
+
+//CATEGORIES
+export const listProductsCategories = () => async (dispatch) => {
+  dispatch({
+    type: PRODUCT_CATEGORY_LIST_REQUEST,
+  });
+  try {
+    //Récupération des products de la database (productRouter.js)
+    const { data } = await Axios.get(
+      `/api/products/categories`
+    );
+    // La data seront directement dans le payload
+    dispatch({ type: PRODUCT_CATEGORY_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    // Message d'erreur si on parvient pas à avoir la data
+    dispatch({ type: PRODUCT_CATEGORY_LIST_FAIL, payload: error.message });
+  }
+};
+
+//Liste des produits HomeScreen // BY STEVE
+export const newListProducts = () => async (dispatch) => {
+  dispatch({
+    type: PRODUCT_NEW_LIST_REQUEST,
+  });
+  try {
+    //Récupération des products de la database (productRouter.js)
+    const { data } = await Axios.get("/api/products/lastproducts");
+    // La data seront directement dans le payload
+    dispatch({ type: PRODUCT_NEW_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    // Message d'erreur si on parvient pas à avoir la data
+    dispatch({ type: PRODUCT_NEW_LIST_FAIL, payload: error.message });
   }
 };
 

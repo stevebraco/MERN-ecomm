@@ -13,6 +13,7 @@ import {
 } from "../constants/productConstants";
 
 export default function ProductListScreen(props) {
+  const sellerMode = props.match.path.indexOf('/seller') >= 0;
   //on appelle le state useSelector pour avoir le state produclist
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
@@ -32,6 +33,9 @@ export default function ProductListScreen(props) {
     success: successDelete,
   } = productDelete;
 
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
+
   const dispatch = useDispatch();
   useEffect(() => {
     // si successCreate est vrai alors on a créé product, on le renvoie sur sa page
@@ -42,15 +46,22 @@ export default function ProductListScreen(props) {
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
-    dispatch(listProducts());
-  }, [createdProduct, dispatch, props.history, successCreate, successDelete]);
+    dispatch(listProducts({ seller: sellerMode ? userInfo._id : '' }));
+  }, [
+    createdProduct,
+    dispatch,
+    props.history,
+    sellerMode,
+    successCreate,
+    successDelete,
+    userInfo._id,
+  ]);
 
   const deleteHandler = (product) => {
     //TODO; dispatch delete action
-      dispatch(deleteProduct(product._id));
-    
-    console.log(product)
+    dispatch(deleteProduct(product._id));
 
+    console.log(product);
   };
 
   const createdHandler = () => {

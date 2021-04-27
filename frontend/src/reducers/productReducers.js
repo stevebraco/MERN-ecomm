@@ -18,6 +18,12 @@ const {
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
   PRODUCT_DELETE_RESET,
+  PRODUCT_NEW_LIST_SUCCESS,
+  PRODUCT_NEW_LIST_REQUEST,
+  PRODUCT_NEW_LIST_FAIL,
+  PRODUCT_CATEGORY_LIST_REQUEST,
+  PRODUCT_CATEGORY_LIST_SUCCESS,
+  PRODUCT_CATEGORY_LIST_FAIL,
 } = require("../constants/productConstants");
 
 export const productListReducer = (
@@ -35,6 +41,41 @@ export const productListReducer = (
       return state;
   }
 };
+
+//CATEGORY
+export const productCategoryListReducer = (
+  state = { loading: true, products: [] },
+  action
+) => {
+  switch (action.type) {
+    case PRODUCT_CATEGORY_LIST_REQUEST: // REQUETE CHARGEMENT
+      return { loading: true };
+    case PRODUCT_CATEGORY_LIST_SUCCESS: // REQUETE FINI DONC CHARGEMENT: FALSE ON AFFICHE LE PAYLOAD
+      return { loading: false, categories: action.payload }; //Ajout dans le state products, la data de productAction.js
+    case PRODUCT_CATEGORY_LIST_FAIL: // CHARGEMENT FALSE ERREUR DU PAYLOAD
+      return { loading: false, error: action.payload }; // on renvoie dans error, le message d'erreur
+    default:
+      return state;
+  }
+};
+
+// BY STEVE
+export const productNewListReducer = (
+  state = { loading: true, newProducts: [] },
+  action
+) => {
+  switch (action.type) {
+    case PRODUCT_NEW_LIST_REQUEST: // REQUETE CHARGEMENT
+      return { loading: true };
+    case PRODUCT_NEW_LIST_SUCCESS: // REQUETE FINI DONC CHARGEMENT: FALSE ON AFFICHE LE PAYLOAD
+      return { loading: false, newProducts: action.payload }; //Ajout dans le state products, la data de productAction.js
+    case PRODUCT_NEW_LIST_FAIL: // CHARGEMENT FALSE ERREUR DU PAYLOAD
+      return { loading: false, error: action.payload }; // on renvoie dans error, le message d'erreur
+    default:
+      return state;
+  }
+};
+
 
 export const productDetailsReducer = (state = { loading: true }, action) => {
   switch (action.type) {

@@ -19,7 +19,7 @@ import {
   ORDER_DELETE_REQUEST,
   ORDER_DELETE_SUCCESS,
   ORDER_DELETE_FAIL
-} from "../constants/orderContants";
+} from "../constants/orderConstants";
 // enregistre (order) dans la database
 //Création de la commande
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -113,13 +113,13 @@ export const listOrderMine = () => async (dispatch, getState) => {
 };
 
 // Liste des commandes
-export const listOrders = () => async (dispatch, getState) => {
+export const listOrders = ({ seller = '' }) => async (dispatch, getState) => {
   dispatch({ type: ORDER_LIST_REQUEST });
   const {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.get("/api/orders", {
+    const { data } = await Axios.get(`/api/orders?seller=${seller}`, {
       headers: { Authorization: `Bearer ${userInfo.token}` },
     });
     dispatch({ type: ORDER_LIST_SUCCESS, payload: data })

@@ -4,10 +4,12 @@ import thunk from "redux-thunk";
 import { cartReducer } from "./reducers/cartReducers";
 import { orderCreateReducer, orderDeleteReducer, orderDetailsReducer, orderListReducer, orderMineListReducer, orderPayReducer } from "./reducers/orderReducers";
 import {
+  productCategoryListReducer,
   productCreateReducer,
   productDeleteReducer,
   productDetailsReducer,
   productListReducer,
+  productNewListReducer,
   productUpdateReducer,
 } from "./reducers/productReducers";
 import {
@@ -15,6 +17,9 @@ import {
   userRegisterReducer,
   userSigninReducer,
   userUpdateProfileReducer,
+  userListReducer,
+  userDeleteReducer,
+  userUpdateReducer,
 } from "./reducers/userReducers";
 
 const initialState = {
@@ -45,11 +50,16 @@ const reducer = combineReducers({
   orderMineList: orderMineListReducer,
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  userUpdate: userUpdateReducer,
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
   productDelete: productDeleteReducer,
   orderList: orderListReducer,
-  orderDelete: orderDeleteReducer
+  orderDelete: orderDeleteReducer,
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
+  productNewList : productNewListReducer, // BY STEVE
+  productCategoryList: productCategoryListReducer,
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -3,12 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteOrder, listOrders } from "../actions/orderActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import { ORDER_DELETE_RESET } from "../constants/orderContants";
+import { ORDER_DELETE_RESET } from "../constants/orderConstants";
 
 export default function OrderListScreen(props) {
+  const sellerMode = props.match.path.indexOf('/seller') >= 0;
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
   const orderDelete = useSelector((state) => state.orderDelete);
+
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   const {
     loading: loadingDelete,
     error: errorDelete,
@@ -17,8 +21,8 @@ export default function OrderListScreen(props) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({type: ORDER_DELETE_RESET})
-    dispatch(listOrders());
-  }, [dispatch, successDelete]);
+    dispatch(listOrders({ seller: sellerMode ? userInfo._id : '' }));
+  }, [dispatch, sellerMode, successDelete, userInfo._id]);
   const deleteHandler = (order) => {
     //TODO delete handler
     if (window.confirm("Are you sure to delete ?")) {
@@ -30,7 +34,8 @@ export default function OrderListScreen(props) {
     <div>
       <h1>Orders</h1>
       {loadingDelete && <LoadingBox></LoadingBox>}
-      {errorDelete && <MessageBox variant="danger" ></MessageBox>}
+      {errorDelete && <MessageBox variant="danger" > {errorDelete} </MessageBox>}
+      {/* {successDelete && <MessageBox variant="success" > Order Deleted Successfully </MessageBox>} */}
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (

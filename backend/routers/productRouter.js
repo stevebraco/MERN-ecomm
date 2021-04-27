@@ -2,15 +2,43 @@ import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import data from "../data.js";
 import Product from "../models/productModel.js";
-import { isAdmin, isAuth } from "../utils.js";
+import { isAdmin, isAuth, isSellerOrAdmin } from "../utils.js";
 
 const productRouter = express.Router();
 
-//Récupération des products
+//Récupération des products dans l'ordre d'arrivé
 productRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
-    const products = await Product.find({});
+    const name = req.query.name || "";
+    const category = req.query.category || "";
+    const seller = req.query.seller || "";
+    const nameFilter = name ? { name: { $regex: name, $options: "i" } } : {};
+    const sellerFilter = seller ? { seller } : {};
+    const categoryFilter = category ? { category } : {};
+    const products = await Product.find({
+      ...sellerFilter,
+      ...nameFilter,
+      ...categoryFilter,
+    });
+    res.send(products);
+  })
+);
+
+//Récupérations des catégories
+productRouter.get(
+  '/categories',
+  expressAsyncHandler(async (req, res) => {
+    const categories = await Product.find().distinct('category');
+    res.send(categories);
+  })
+);
+
+// Récupération des 3 derniers produits BY STEVE
+productRouter.get(
+  "/lastproducts",
+  expressAsyncHandler(async (req, res) => {
+    const products = await Product.find({}).sort({ _id: -1 }).limit(5);
     res.send(products);
   })
 );
@@ -38,13 +66,15 @@ productRouter.get(
   })
 );
 
+// Créer un PRODUCT
 productRouter.post(
   "/",
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = new Product({
       name: "sample name" + Date.now(), // for an unique name
+      seller: req.user._id,
       image: "/images/p1.jpg",
       price: 0,
       category: "sample brand",
@@ -59,10 +89,11 @@ productRouter.post(
   })
 );
 
+// MODIFIER UN PRODUCT
 productRouter.put(
   "/:id",
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
     const product = await Product.findById(productId);
@@ -82,18 +113,18 @@ productRouter.put(
   })
 );
 
-
+// SUPPRIMER UN PRODUCT
 productRouter.delete(
-  '/:id',
+  "/:id",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
       const deleteProduct = await product.remove();
-      res.send({ message: 'Product Deleted', product: deleteProduct });
+      res.send({ message: "Product Deleted", product: deleteProduct });
     } else {
-      res.status(404).send({ message: 'Product Not Found' });
+      res.status(404).send({ message: "Product Not Found" });
     }
   })
 );

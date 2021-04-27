@@ -19,7 +19,7 @@ import {
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS,
-} from "../constants/orderContants";
+} from "../constants/orderConstants";
 
 export const orderCreateReducer = (state = {}, action) => {
   switch (action.type) {
