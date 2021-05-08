@@ -38,7 +38,7 @@ productRouter.get(
 productRouter.get(
   "/lastproducts",
   expressAsyncHandler(async (req, res) => {
-    const products = await Product.find({}).sort({ _id: -1 }).limit(5);
+    const products = await Product.find({}).sort({ _id: -1 }).limit(3);
     res.send(products);
   })
 );
