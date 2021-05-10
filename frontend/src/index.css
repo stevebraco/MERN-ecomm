@@ -333,7 +333,15 @@ figure {
   border-right: none;
   margin-left: .5rem;
 }
+.active {
+  font-weight: bold;
+}
 /* STEVE */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+}
 .home {
   position: relative;
   background: url('./img/home.jpeg');
@@ -343,10 +351,30 @@ figure {
   padding: 8rem 0;
   text-align: center;
 }
-
+.section {
+  padding: 5rem 2rem;
+}
+.wrapper {
+  padding: 4rem 2rem;
+  max-width: 85rem;
+  margin: 0 auto;
+}
+.wrapper-video {
+  position: relative;
+  background: rgba(250, 235, 218, 0.522);
+  display: flex;
+  justify-content: center;
+}
+video {
+ 
+}
 .heading-one {
   font-size: 5rem;
   color: white;
+}
+.heading-two {
+  font-size: 5rem;
+  color: #212121;
 }
 .heading-product {
   font-size: 1.3rem;
@@ -366,4 +394,17 @@ figure {
 
 .txt-center {
   text-align: center;
+}
+
+.bijoux-text {
+  position: relative;
+  max-width: 50rem;
+ 
+}
+.absolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
 }
