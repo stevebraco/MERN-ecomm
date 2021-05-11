@@ -49,7 +49,7 @@ productRouter.get(
   })
 );
 
-//Récupérations des catégories
+//Récupérations des catégories BY STEVE
 productRouter.get(
   "/categories",
   expressAsyncHandler(async (req, res) => {
@@ -67,7 +67,16 @@ productRouter.get(
   })
 );
 
-// Récupération des 3 derniers produits BY STEVE
+// Récupération des catégories RINGS BY STEVE
+productRouter.get(
+  "/category",
+  expressAsyncHandler(async (req, res) => {
+    const products = await Product.find({ category: 'Rings' });
+    res.send(products);
+  })
+);
+
+// Récupération 1 produits BY STEVE
 productRouter.get(
   "/oneproduct",
   expressAsyncHandler(async (req, res) => {

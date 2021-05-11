@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { detailsOrder, payOrder } from "../actions/orderActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
+import { ORDER_PAY_RESET } from "../constants/orderConstants";
 
 export default function OrderScreen(props) {
   const orderId = props.match.params.id;
@@ -15,7 +16,6 @@ export default function OrderScreen(props) {
   console.log("orderId", orderId);
   console.log("state Order", order);
   const orderPay = useSelector((state) => state.orderPay);
-  // on renomme error et success
   const {
     loading: loadingPay,
     error: errorPay,
@@ -40,6 +40,7 @@ export default function OrderScreen(props) {
     if (!order || successPay || (order && order._id !== orderId)) {
       // //when successPay is true we need to refresh the page
       //on appelle le créateur d'action pour créer une action, que l'on dispatch
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch(detailsOrder(orderId));
     } else {
       if (!order.isPaid) {
@@ -50,7 +51,7 @@ export default function OrderScreen(props) {
         }
       }
     }
-  }, [dispatch, order, successPay, orderId, sdkReady]);
+  }, [dispatch, order, successPay, orderId, sdkReady, successPay]);
 
   const successPaymentHandler = (paymentResult) => {
     //TO DO dispatch pay order
@@ -175,9 +176,10 @@ export default function OrderScreen(props) {
                     ) : (
                       <>
                         {errorPay && (
-                          <MessageBox variant="danger"> {errorPay} </MessageBox>
+                          <MessageBox variant="danger">{errorPay}</MessageBox>
                         )}
                         {loadingPay && <LoadingBox></LoadingBox>}
+
                         <PayPalButton
                           amount={order.totalPrice}
                           onSuccess={successPaymentHandler}

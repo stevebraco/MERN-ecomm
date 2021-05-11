@@ -8,6 +8,7 @@ import MessageBox from "../components/MessageBox";
 import Product from "../components/Product";
 import { prices, ratings } from "../utils";
 import Rating from "./Rating";
+console.log(prices);
 
 export default function SearchScreen(props) {
   const {
@@ -63,6 +64,7 @@ export default function SearchScreen(props) {
           <div>{products.length} Results</div>
         )}
       </div>
+      <div className='row justify'>
       <div>
         Sort by{" "}
         <select
@@ -76,6 +78,31 @@ export default function SearchScreen(props) {
           <option value="highest">Price: High to Low</option>
           <option value="toprated">Avg. Customer Reviews</option>
         </select>
+      </div>
+       {/* BY STEVE */}
+       <>
+       {loadingCategories ? (
+              <LoadingBox></LoadingBox>
+            ) : errorCategories ? (
+              <MessageBox variant="danger">{errorCategories}</MessageBox>
+            ) : (
+       <div>
+         Type 
+            <select value={category}
+            onChange={(e) =>{
+              props.history.push(getFilterUrl({category: e.target.value}))
+            }}
+            >
+              <option value="all">Any</option>
+              {categories.map((c) => (
+                <option value={c}>{c}</option>
+              ))}
+            </select>
+            </div>
+            )}
+            </>
+            
+            {/* BY STEVE */}
       </div>
       <div className="row top">
         <div className="col-1">
@@ -107,6 +134,8 @@ export default function SearchScreen(props) {
                 ))}
               </ul>
             )}
+           
+
             <div>
               <h3>Price</h3>
               <ul>

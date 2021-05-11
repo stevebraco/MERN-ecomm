@@ -236,7 +236,7 @@ function App() {
         {/* MAIN ROUTE */}
         <Route path="/" component={HomeScreen} exact></Route>
       </main>
-      <footer className="row center">All right reserved</footer>
+      <footer className="row center"><a href="https://stevebraco.fr">Steve Braco</a></footer>
     </BrowserRouter>
   );
 }

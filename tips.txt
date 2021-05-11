@@ -1,0 +1,18 @@
+dans SearchScreen pour mettre price en select : 
+    // return `/search/category/${filterCategory}/name/${filterName}/min/${filterMin}/rating/${filterRating}/order/${sortOrder}`;
+
+<>
+                              {/* PRICE */}
+                <div>
+                   <select value={prices}
+            onChange={(e) =>{
+              props.history.push(getFilterUrl({min: e.target.value, max: e.target.value}))
+            }}
+            >
+
+              {prices.map((p) => (
+                <option value={`${p.min}/max/${p.max}`}   >{p.name}</option>
+              ))}
+            </select>
+                </div>
+            </>

@@ -106,9 +106,9 @@ orderRouter.put(
       };
       //Save mise à jour
       const updatedOrder = await order.save();
-      res.send({ message: "Order Paid", order: updatedOrder });
+      res.send({ message: 'Order Paid', order: updatedOrder });
     } else {
-      res.status(404).send({ message: "Order Not Found" });
+      res.status(404).send({ message: 'Order Not Found' });
     }
   })
 );
