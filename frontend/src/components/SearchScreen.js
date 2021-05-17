@@ -66,7 +66,7 @@ export default function SearchScreen(props) {
       </div>
       <div className='row justify'>
       <div>
-        Sort by{" "}
+        Sort by
         <select
           value={order}
           onChange={(e) => {
